@@ -11,8 +11,8 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "emp.json",
-				"folderPath": "test",
-				"fileSystem": "source"
+				"folderPath": "abc",
+				"fileSystem": "staging"
 			},
 			"compressionCodec": "snappy"
 		},
