@@ -20,7 +20,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"folderPath": "test",
-				"fileSystem": "container"
+				"fileSystem": "source"
 			},
 			"compressionCodec": "snappy"
 		},
