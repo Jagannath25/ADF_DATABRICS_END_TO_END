@@ -50,7 +50,6 @@
 						"referenceName": "DS_Adls_Parquet",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "source",
 							"folder": "test"
 						}
 					}
@@ -58,11 +57,7 @@
 				"outputs": [
 					{
 						"referenceName": "DS_Adls_Parquet",
-						"type": "DatasetReference",
-						"parameters": {
-							"container": "staging",
-							"folder": "abc"
-						}
+						"type": "DatasetReference"
 					}
 				]
 			},
