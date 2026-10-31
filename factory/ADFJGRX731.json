@@ -1,0 +1,15 @@
+{
+	"name": "ADFJGRX731",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "cf729638-1189-4be3-a6d2-2eef7aea7f96",
+		"tenantId": "ca3aafd1-50d1-45e3-9179-ae968e6aaa41"
+	}
+}
