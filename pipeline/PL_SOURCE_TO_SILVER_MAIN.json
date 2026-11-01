@@ -30,12 +30,55 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "IngestAllTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "readTableFromControlTable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('readTableFromControlTable').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "readTableId",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "tableId",
+								"value": {
+									"value": "@item().table_id",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
 			"source_system": {
 				"type": "string",
 				"defaultValue": "Neon_PostgreSQL"
+			}
+		},
+		"variables": {
+			"tableId": {
+				"type": "String"
 			}
 		},
 		"annotations": []
