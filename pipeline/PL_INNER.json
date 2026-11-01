@@ -198,6 +198,42 @@
 					"referenceName": "LS_AzureDatabricks",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "updateStatusCompleted",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "bronzeToSilver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "update table  ctrl.audit_log set status='SUCCESS' ,records_written =@{activity('bronzeToSilver').output.runOutput} ,end_time=SYSUTCDATETIME() where table_id=@{pipeline().parameters.table_id} and adf_run_id='@{pipeline().RunId}'\n\n",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"parameters": {
