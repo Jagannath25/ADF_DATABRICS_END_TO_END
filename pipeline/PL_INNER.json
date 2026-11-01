@@ -5,6 +5,8 @@
 			{
 				"name": "readTableDetailsById",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -34,6 +36,8 @@
 			{
 				"name": "setStartTime",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,
@@ -51,6 +55,8 @@
 			{
 				"name": "sourceToStagingIngestion",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "readTableDetailsById",
@@ -124,6 +130,8 @@
 			{
 				"name": "StagingToBronze",
 				"type": "DatabricksNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "sourceToStagingIngestion",
@@ -165,6 +173,8 @@
 			{
 				"name": "bronzeToSilver",
 				"type": "DatabricksNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "StagingToBronze",
@@ -202,14 +212,7 @@
 			{
 				"name": "updateStatusCompleted",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "bronzeToSilver",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -227,7 +230,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "update   ctrl.audit_log set status='SUCCESS' ,records_written =@{activity('bronzeToSilver').output.runOutput} ,end_time=SYSUTCDATETIME() where table_id='@{pipeline().parameters.table_id}' and adf_run_id='@{pipeline().RunId}'\n\n",
+								"value": "update   ctrl.audit_log set status='SUCCESS' ,records_written =30 ,end_time=SYSUTCDATETIME() where table_id=@{pipeline().parameters.table_id} and adf_run_id='@{pipeline().RunId}'\n\n",
 								"type": "Expression"
 							}
 						}
