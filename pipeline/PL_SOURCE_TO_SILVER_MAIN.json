@@ -8,8 +8,8 @@
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
+					"retry": 2,
+					"retryIntervalInSeconds": 10,
 					"secureOutput": false,
 					"secureInput": false
 				},
@@ -17,17 +17,27 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select table_id from ctrl.table_config where is_active =1 and source_system='Neon_PostgreSQL'",
+						"sqlReaderQuery": {
+							"value": "select table_id from ctrl.table_config where is_active =1 and source_system='@{pipeline().parameters.source_system}'",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "DS_AzureSqlTable",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
+		"parameters": {
+			"source_system": {
+				"type": "string",
+				"defaultValue": "Neon_PostgreSQL"
+			}
+		},
 		"annotations": []
 	}
 }
