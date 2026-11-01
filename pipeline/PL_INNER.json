@@ -144,11 +144,11 @@
 					"notebookPath": "/ADB-HOSPITAL-REPO/ADB_REPO/staging_to_bronze",
 					"baseParameters": {
 						"source_system": {
-							"value": "@activity('readTableDetailsById').output.firstRow.source_system",
+							"value": "@activity('readTableDetailsById').output.firstRow.source_path",
 							"type": "Expression"
 						},
 						"table_name": {
-							"value": "@activity('readTableDetailsById').output.firstRow.bronze_table_name",
+							"value": "@activity('readTableDetailsById').output.firstRow.source_table_name",
 							"type": "Expression"
 						},
 						"landing_timestamp": {
@@ -185,7 +185,7 @@
 					"notebookPath": "/ADB-HOSPITAL-REPO/ADB_REPO/Bronze_To_Silver",
 					"baseParameters": {
 						"table_name": {
-							"value": "@activity('readTableDetailsById').output.firstRow.silver_table_name",
+							"value": "@activity('readTableDetailsById').output.firstRow.source_table_name",
 							"type": "Expression"
 						},
 						"landing_timestamp": {
