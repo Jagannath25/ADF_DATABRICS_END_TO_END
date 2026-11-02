@@ -390,7 +390,7 @@
 							"value": "adls_csv",
 							"activities": [
 								{
-									"name": "Copy data1",
+									"name": "copyFromSourceToStagingCSV",
 									"type": "Copy",
 									"dependsOn": [],
 									"policy": {
