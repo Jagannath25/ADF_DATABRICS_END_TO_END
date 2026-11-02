@@ -354,7 +354,10 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "update ctrl.watermark set watermark_value="
+										"text": {
+											"value": "UPDATE ctrl.watermark\nSET watermark_value = '@{formatDateTime(convertFromUtc(utcNow(),'India Standard Time'),'yyyy-MM-dd HH:mm:ss')}'\nWHERE table_id = @{pipeline().parameters.table_id};",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
