@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"source": {
+			"container": {
 				"type": "string"
 			},
 			"folder": {
@@ -23,7 +23,7 @@
 					"type": "Expression"
 				},
 				"fileSystem": {
-					"value": "@dataset().source",
+					"value": "@dataset().container",
 					"type": "Expression"
 				}
 			}

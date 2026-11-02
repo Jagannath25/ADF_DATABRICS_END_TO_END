@@ -430,8 +430,8 @@
 											"referenceName": "DS_ADLS_BINAry",
 											"type": "DatasetReference",
 											"parameters": {
-												"source": {
-													"value": "@activity('readTableDetailsById').output.firstRow.source_path",
+												"container": {
+													"value": "@activity('readTableDetailsById').output.firstRow.source_system",
 													"type": "Expression"
 												}
 											}
@@ -442,7 +442,7 @@
 											"referenceName": "DS_ADLS_BINAry",
 											"type": "DatasetReference",
 											"parameters": {
-												"source": "staging",
+												"container": "staging",
 												"folder": {
 													"value": "@concat(\n    activity('readTableDetailsById').output.firstRow.source_system,'/',\n    activity('readTableDetailsById').output.firstRow.source_table_name,\n    '/',\n    variables('start_time')\n)",
 													"type": "Expression"
