@@ -387,7 +387,7 @@
 							]
 						},
 						{
-							"value": "adls_csvCase2",
+							"value": "adls_csv",
 							"activities": [
 								{
 									"name": "Copy data1",
