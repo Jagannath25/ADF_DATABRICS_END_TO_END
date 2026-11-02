@@ -406,7 +406,8 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobFSReadSettings",
-												"recursive": true
+												"recursive": false,
+												"deleteFilesAfterCompletion": false
 											},
 											"formatSettings": {
 												"type": "BinaryReadSettings"
@@ -422,17 +423,20 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "DS_ADLS_BINAry",
+											"referenceName": "DS_ADLS_BINARY",
 											"type": "DatasetReference",
 											"parameters": {
 												"container": "source",
-												"folder": "@activity('readTableDetailsById').output.firstRow.source_system"
+												"folder": {
+													"value": "@activity('readTableDetailsById').output.firstRow.source_path",
+													"type": "Expression"
+												}
 											}
 										}
 									],
 									"outputs": [
 										{
-											"referenceName": "DS_ADLS_BINAry",
+											"referenceName": "DS_ADLS_BINARY",
 											"type": "DatasetReference",
 											"parameters": {
 												"container": "staging",

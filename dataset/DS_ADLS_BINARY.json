@@ -1,5 +1,5 @@
 {
-	"name": "DS_ADLS_BINAry",
+	"name": "DS_ADLS_BINARY",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_AzureDataLakeStorage",
