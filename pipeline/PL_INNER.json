@@ -390,7 +390,7 @@
 							"value": "adls_csvCase2",
 							"activities": [
 								{
-									"name": "sourceToStagingIngestionForFile",
+									"name": "Copy data1",
 									"type": "Copy",
 									"dependsOn": [],
 									"policy": {
@@ -406,12 +406,7 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"modifiedDatetimeStart": {
-													"value": "@variables('watermark_value')",
-													"type": "Expression"
-												},
-												"deleteFilesAfterCompletion": false
+												"recursive": true
 											},
 											"formatSettings": {
 												"type": "BinaryReadSettings"
@@ -430,10 +425,8 @@
 											"referenceName": "DS_ADLS_BINAry",
 											"type": "DatasetReference",
 											"parameters": {
-												"container": {
-													"value": "@activity('readTableDetailsById').output.firstRow.source_system",
-													"type": "Expression"
-												}
+												"container": "source",
+												"folder": "@activity('readTableDetailsById').output.firstRow.source_system"
 											}
 										}
 									],
@@ -443,10 +436,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"container": "staging",
-												"folder": {
-													"value": "@concat(\n    activity('readTableDetailsById').output.firstRow.source_system,'/',\n    activity('readTableDetailsById').output.firstRow.source_table_name,\n    '/',\n    variables('start_time')\n)",
-													"type": "Expression"
-												}
+												"folder": "@concat(     activity('readTableDetailsById').output.firstRow.source_system,'/',     activity('readTableDetailsById').output.firstRow.source_table_name,     '/',     variables('start_time') )"
 											}
 										}
 									]
