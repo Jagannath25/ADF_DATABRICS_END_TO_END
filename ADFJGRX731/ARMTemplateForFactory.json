@@ -1007,6 +1007,23 @@
 										],
 										"scriptBlockExecutionTimeout": "02:00:00"
 									}
+								},
+								{
+									"name": "MakePipelineFaile",
+									"type": "Fail",
+									"dependsOn": [
+										{
+											"activity": "sourceToSilverEndToEnd",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"message": "failed Due to inner pipeline fail ",
+										"errorCode": "500"
+									}
 								}
 							]
 						}
