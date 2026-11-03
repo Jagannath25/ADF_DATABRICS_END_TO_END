@@ -79,7 +79,8 @@
 						"run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
-						}
+						},
+						"source_system": "silver"
 					}
 				}
 			}
