@@ -1,0 +1,23 @@
+{
+	"name": "LS_AzureSqlDatabase",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "my-control-server.database.windows.net",
+			"database": "control",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "serveradminmyservercontrol",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KEY_VOULT",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "azurdb"
+			}
+		}
+	}
+}
