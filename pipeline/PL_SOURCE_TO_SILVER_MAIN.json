@@ -75,6 +75,10 @@
 									"table_id": {
 										"value": "@item().table_id",
 										"type": "Expression"
+									},
+									"run_id": {
+										"value": "@pipeline().parameters.run_id",
+										"type": "Expression"
 									}
 								}
 							}
