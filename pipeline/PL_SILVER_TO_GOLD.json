@@ -71,7 +71,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "INSERT INTO ctrl.audit_log\n(\n    adf_run_id,\n    table_id,\n    status,\n    start_time,\n    stage\n)\nVALUES\n(\n    '@{pipeline().RunId}',\n    @{item().table_id},\n    'IN_PROGRESS',\n    '@{convertFromUtc(utcNow(),'India Standard Time')}',\n    'SILVER_TO_GOLD'\n);",
+											"value": "INSERT INTO ctrl.audit_log\n(\n    adf_run_id,\n    table_id,\n    status,\n    start_time,\n    stage\n)\nVALUES\n(\n    '@{pipeline().RunId}',\n    @{pipeline().parameters.run_id},\n    'IN_PROGRESS',\n    '@{convertFromUtc(utcNow(),'India Standard Time')}',\n    'SILVER_TO_GOLD'\n);",
 											"type": "Expression"
 										}
 									}
@@ -107,7 +107,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "UPDATE ctrl.audit_log\nSET\n    status = 'FAILED',\n    end_time = '@{convertFromUtc(utcNow(),'India Standard Time')}'\nWHERE\n    table_id = @{item().table_id}\n    AND adf_run_id = '@{pipeline().RunId}';",
+											"value": "UPDATE ctrl.audit_log\nSET\n    status = 'FAILED',\n    end_time = '@{convertFromUtc(utcNow(),'India Standard Time')}'\nWHERE\n    table_id = @{item().table_id}\n    AND adf_run_id = '@{pipeline().parameters.run_id}';",
 											"type": "Expression"
 										}
 									}
@@ -173,7 +173,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "UPDATE ctrl.audit_log\nSET\n    status = 'SUCCESS',\n    records_written = TRY_CONVERT(\n        INT,\n        '@{activity('SilverToGold').output.runOutput}'\n    ),\n    end_time = SYSUTCDATETIME()\nWHERE\n    table_id = @{item().table_id}\n    AND adf_run_id = '@{pipeline().RunId}';",
+											"value": "UPDATE ctrl.audit_log\nSET\n    status = 'SUCCESS',\n    records_written = TRY_CONVERT(\n        INT,\n        '@{activity('SilverToGold').output.runOutput}'\n    ),\n    end_time = SYSUTCDATETIME()\nWHERE\n    table_id = @{item().table_id}\n    AND adf_run_id = '@{pipeline().parameters.run_id}';",
 											"type": "Expression"
 										}
 									}
@@ -185,6 +185,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"run_id": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"tableId": {
 				"type": "String"
