@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADFJGRX731"
+		},
+		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://stonedrive.dfs.core.windows.net/"
+		},
+		"LS_AzureDatabricks_properties_typeProperties_existingClusterId": {
+			"value": "1101-073139-cpm1q3eq"
+		},
+		"LS_AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "my-control-server.database.windows.net"
+		},
+		"LS_AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "control"
+		},
+		"LS_AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "serveradminmyservercontrol"
+		},
+		"LS_KEY_VOULT_properties_typeProperties_baseUrl": {
+			"value": "https://onedrivekv.vault.azure.net/"
+		},
+		"LS_PostgreSql_properties_typeProperties_server": {
+			"value": "ep-blue-sunset-b541d710-pooler.c-7.us-east-2.aws.neon.tech"
+		},
+		"LS_PostgreSql_properties_typeProperties_database": {
+			"value": "neondb"
+		},
+		"LS_PostgreSql_properties_typeProperties_username": {
+			"value": "neondb_owner"
+		}
+	}
+}
