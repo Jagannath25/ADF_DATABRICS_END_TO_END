@@ -821,7 +821,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "select table_id,gold_table_name\n from ctrl.table_config  where is_active=1 and stage='SILVER_TO_GOLD'",
+									"value": "select table_id,gold_table_name\n from ctrl.table_config  where is_active=1 and source_system=@{pipeline().parameters.source_system}",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -995,6 +995,10 @@
 				"parameters": {
 					"run_id": {
 						"type": "string"
+					},
+					"source_system": {
+						"type": "string",
+						"defaultValue": "silver"
 					}
 				},
 				"variables": {
@@ -1032,7 +1036,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "select table_id from ctrl.table_config  where is_active=1 and stage=@{pipeline().parameters.source_system};",
+									"value": "select table_id from ctrl.table_config  where is_active=1 and source_system=@{pipeline().parameters.source_system};",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -1271,7 +1275,8 @@
 								"run_id": {
 									"value": "@pipeline().RunId",
 									"type": "Expression"
-								}
+								},
+								"source_system": "silver"
 							}
 						}
 					}
