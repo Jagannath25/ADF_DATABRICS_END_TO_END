@@ -878,7 +878,7 @@
 											{
 												"type": "Query",
 												"text": {
-													"value": "INSERT INTO ctrl.audit_log\n(\n    adf_run_id,\n    table_id,\n    status,\n    start_time,\n    stage\n)\nVALUES\n(\n    '@{pipeline().RunId}',\n    @{pipeline().parameters.run_id},\n    'IN_PROGRESS',\n    '@{convertFromUtc(utcNow(),'India Standard Time')}',\n    'SILVER_TO_GOLD'\n);",
+													"value": "INSERT INTO ctrl.audit_log\n(\n    adf_run_id,\n    table_id,\n    status,\n    start_time,\n    stage\n)\nVALUES\n(\n    '@{pipeline().parameters.run_id}',\n    @{item().table_id},\n    'IN_PROGRESS',\n    '@{convertFromUtc(utcNow(),'India Standard Time')}',\n    'SILVER_TO_GOLD'\n);",
 													"type": "Expression"
 												}
 											}
@@ -997,7 +997,8 @@
 				},
 				"parameters": {
 					"run_id": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "6"
 					},
 					"source_system": {
 						"type": "string",
@@ -1096,6 +1097,10 @@
 										"parameters": {
 											"table_id": {
 												"value": "@item().table_id",
+												"type": "Expression"
+											},
+											"run_id": {
+												"value": "@pipeline().parameters.run_id",
 												"type": "Expression"
 											}
 										}
