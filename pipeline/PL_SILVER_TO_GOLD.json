@@ -136,7 +136,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"notebookPath": {
-									"value": "@concat(\n    '/ADB-HOSPITAL-REPO/ADB_REPO/Gold/',\n    item().gold_table_name\n)",
+									"value": "@concat(\n    '/ADB-HOSPITAL-REPO/ADB_REPO/Gold/NB_',\n    item().gold_table_name\n)",
 									"type": "Expression"
 								}
 							},
