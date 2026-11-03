@@ -408,7 +408,7 @@
 												"type": "AzureBlobFSReadSettings",
 												"recursive": false,
 												"modifiedDatetimeStart": {
-													"value": "@variables('watermark_value')",
+													"value": "@convertToUtc(variables('watermark_value'),'India Standard Time')",
 													"type": "Expression"
 												},
 												"deleteFilesAfterCompletion": false
