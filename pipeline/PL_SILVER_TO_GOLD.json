@@ -187,7 +187,8 @@
 		],
 		"parameters": {
 			"run_id": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "6"
 			},
 			"source_system": {
 				"type": "string",
