@@ -1,0 +1,32 @@
+{
+	"name": "my_hospital_tgr",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_MASTER",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-11-04T20:05:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"minutes": [
+						44
+					],
+					"hours": [
+						1
+					]
+				}
+			}
+		}
+	}
+}
