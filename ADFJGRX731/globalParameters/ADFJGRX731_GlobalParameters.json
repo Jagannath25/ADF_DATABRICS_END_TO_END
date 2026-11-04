@@ -1,1 +1,14 @@
-{}
+{
+	"email_recepient": {
+		"type": "string",
+		"value": "jvrasekar@gmail.com"
+	},
+	"logic_app_url": {
+		"type": "string",
+		"value": "https://prod-26.northcentralus.logic.azure.com:443/workflows/1edd8eb6fbcf49e8b4c7c07882f1f3ed/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=5wQ_Z3N1fgSOR5UHdOzNgHKwF5sgOw4mWCeF3uRKv70"
+	},
+	"environment": {
+		"type": "string",
+		"value": "DEV"
+	}
+}

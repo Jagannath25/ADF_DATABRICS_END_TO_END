@@ -803,6 +803,227 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_SEND_EMAIL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "readTableByRunId",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select * from ctrl.audit_log where adf_run_id='@{pipeline().parameters.run_id}'",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_AzureSqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "prepareEmailBody",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "body_header",
+							"value": "Ingestion and transformation process\nfor hospital below is status"
+						}
+					},
+					{
+						"name": "prepareEmailFooter",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "body_footer",
+							"value": "for any support please reach out to jaggurasekar105@gmail.com"
+						}
+					},
+					{
+						"name": "createEmailSubject",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "checkOverAllFailedCount",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "subject",
+							"value": {
+								"value": "@{pipeline().globalParameters.environment} | @{if(greater(activity('checkOverAllFailedCount').output.firstRow.cnt, 0),'FAILED','SUCCESS' )} |HOSPITAL MASTER RUN",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "checkOverAllFailedCount",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select count(*) as cnt from ctrl.audit_log where adf_run_id='@{pipeline().parameters.run_id}' and status !='SUCCESS'",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_AzureSqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "logicAppBody",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "readTableByRunId",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "prepareEmailBody",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "prepareEmailFooter",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "createEmailSubject",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "body",
+							"value": {
+								"value": "{\n  \"subject\": \"@{variables('subject')}\",\n  \"email_recipients\": \"@{pipeline().globalParameters.email_recepient}\",\n  \"body_header\": \"@{variables('body_header')}\",\n  \"body_footer\": \"@{variables('body_footer')}\",\n  \"status_table\": @{activity('readTableByRunId').output.value}\n}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "sendEmail",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "logicAppBody",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": {
+								"value": "@pipeline().globalParameters.logic_app_url",
+								"type": "Expression"
+							},
+							"body": {
+								"value": "@variables('body')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"run_id": {
+						"type": "string",
+						"defaultValue": "a2e55211-f704-4c63-b493-d11a4f453ac3"
+					}
+				},
+				"variables": {
+					"body_header": {
+						"type": "String"
+					},
+					"subject": {
+						"type": "String"
+					},
+					"body": {
+						"type": "String"
+					},
+					"body_footer": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_AzureSqlTable')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_SILVER_TO_GOLD')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1321,6 +1542,35 @@
 								"source_system": "silver"
 							}
 						}
+					},
+					{
+						"name": "SendEmail",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "SilverToGold",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_SEND_EMAIL",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							}
+						}
 					}
 				],
 				"policy": {
@@ -1330,7 +1580,46 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_SOURCE_TO_SILVER_MAIN')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_SILVER_TO_GOLD')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_SILVER_TO_GOLD')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_SEND_EMAIL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/my_hospital_tgr')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_MASTER",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2026-11-04T20:05:00",
+						"timeZone": "India Standard Time",
+						"schedule": {
+							"minutes": [
+								44
+							],
+							"hours": [
+								1
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_MASTER')]"
 			]
 		}
 	]
