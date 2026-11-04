@@ -1,6 +1,12 @@
 {
 	"name": "ADFJGRX731",
 	"properties": {
+		"globalParameters": {
+			"email_recepient": {
+				"type": "string",
+				"value": "jvrasekar@gmail.com"
+			}
+		},
 		"trustModeClaimForMi": {
 			"value": "Disabled",
 			"editable": true
