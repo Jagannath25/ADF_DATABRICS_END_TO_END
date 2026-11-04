@@ -83,6 +83,35 @@
 						"source_system": "silver"
 					}
 				}
+			},
+			{
+				"name": "SendEmail",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SilverToGold",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_SEND_EMAIL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"run_id": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"annotations": []
