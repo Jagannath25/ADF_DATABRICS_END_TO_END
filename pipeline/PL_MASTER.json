@@ -17,7 +17,7 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"source_system": "neon_postgres",
+						"source_system": "adls_csv",
 						"run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
@@ -34,14 +34,11 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"waitOnCompletion": true,
-					"parameters": {
-						"source_system": "adls_csv",
-						"run_id": {
-							"value": "@pipeline().RunId",
-							"type": "Expression"
-						}
-					}
+					"pipeline": {
+						"referenceName": "PL_SOURCE_TO_SILVER_MAIN",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			},
 			{
@@ -96,6 +93,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_SEND_EMAIL",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true,
 					"parameters": {
 						"run_id": {
