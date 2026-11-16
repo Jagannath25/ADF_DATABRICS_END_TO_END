@@ -11,7 +11,8 @@
 					"referenceName": "LS_KEY_VOULT",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "adb-token"
+				"secretName": "adbbbbb",
+				"secretVersion": "75e89058a6674215ba73956f3a36c2b5"
 			},
 			"existingClusterId": "1101-073139-cpm1q3eq"
 		}
