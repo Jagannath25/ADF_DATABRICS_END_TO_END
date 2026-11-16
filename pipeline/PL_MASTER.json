@@ -17,7 +17,7 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"source_system": "neon_postgres",
+						"source_system": "adls_csv",
 						"run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
